@@ -1,0 +1,18 @@
+[General]
+
+arch=amd64
+directory=/yangtze-rootfs
+cleanup=true
+noauth=false
+unpack=true
+explicitsuite=false
+multiarch=
+aptsources=Ubuntu
+bootstrap=yangtze
+
+[yangtze]
+
+packages=apt ca-certificates locales sudo systemd
+source=http://archive.build.openkylin.top/openkylin/
+keyring=openkylin-keyring
+suite=yangtze
