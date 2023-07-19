@@ -14,5 +14,4 @@ sudo tar -cf yangtze-rootfs.tar -C /yangtze-rootfs .
 
 # 声明
 
-参考 deepin-docker 制作
-[deepin-docker](https://github.com/BLumia/deepin-docker)
+参考 [deepin-docker](https://github.com/BLumia/deepin-docker) 制作
