@@ -12,7 +12,7 @@ bootstrap=yangtze
 
 [yangtze]
 
-packages=apt ca-certificates locales sudo systemd openkylin-archive-anything
+packages=apt ca-certificates locales sudo systemd openkylin-archive-anything git fakeroot build-essential libncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
 source=http://archive.build.openkylin.top/openkylin/
 keyring=openkylin-keyring
 suite=yangtze
