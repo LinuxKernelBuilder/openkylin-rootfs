@@ -1,0 +1,66 @@
+name: build rootfs
+
+on:
+  push:
+    branches: [ 'master' ]
+    paths:
+      - 'build.sh'
+      - 'config/**'
+      - 'version.txt'
+  pull_request:
+    branches: [ 'master' ]
+    paths:
+      - 'build.sh'
+      - 'config/**'
+      - 'version.txt'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build tar file
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          # 这个值是保留给系统的空间大小，之前设置太小，总会在安装依赖或者编译过程中报设备空间不足的错误而导致编译失败
+          root-reserve-mb: 4096
+          swap-size-mb: 512
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-codeql: 'true'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: update source and add binfmts # 更新源到 noble
+        run: |
+          sudo sed -i 's/jammy/noble/g' /etc/apt/sources.list
+          sudo apt update -y && sudo apt install mmdebstrap qemu-user-static usrmerge qemu-user systemd
+          sudo apt-mark hold usrmerge
+          sudo cp -v /usr/lib/arch-test/riscv64 /usr/lib/arch-test/loong64
+          sudo sed -i "/riscv64  => 'riscv64',/a\            loong64  => 'loongarch64'," /usr/bin/mmdebstrap
+          sudo systemctl restart systemd-binfmt
+
+      - name: Run build.sh
+        run: |
+          sudo bash build.sh
+
+      - name: Read version
+        id: read_version
+        run: echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
+
+      - name: Upload file to release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ env.GITHUB_TOKEN }}"
+          automatic_release_tag: "v${{ env.VERSION }}"
+          prerelease: true
+          title: "v${{ env.VERSION }}"
+          files: |
+            rootfs/openkylin-rootfs-amd64.tar.gz
+            rootfs/openkylin-rootfs-arm64.tar.gz
+            rootfs/openkylin-rootfs-riscv64.tar.gz

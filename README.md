@@ -1,17 +1,11 @@
 # 介绍
 
-使用 Multistrap 工具制作根文件系统，Multistrap是一个工具，可以用来构建一个完整的、可启动的、根文件系统。这个根文件系统可以被 Docker 和 WSL 使用。
-
+使用 mmdebstrap 工具制作根文件系统，mmdebstrap 是一个工具，允许你选择性地包含或排除某些软件包，这样可以创建更小的、定制化的根文件系统。这个根文件系统可以被 Docker 和 WSL 使用。
 
 # 使用
 
-yangtze.multistrap 是配置文件。
-
 ```bash
 bash build.sh
-sudo tar -cf yangtze-rootfs.tar -C /yangtze-rootfs .
 ```
 
-# 声明
-
-参考 [deepin-docker](https://github.com/BLumia/deepin-docker) 制作
+支持多加个架构 amd64 arm64 riscv64 架构。
