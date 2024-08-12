@@ -25,7 +25,7 @@ sudo apt install ./openkylin-keyring.deb && rm ./openkylin-keyring.deb
 curl http://archive.build.openkylin.top/openkylin/pool/main/o/openkylin-archive-anything/openkylin-archive-anything_2023.02.06-ok4_all.deb --output openkylin-archive-anything.deb
 sudo apt install ./openkylin-archive-anything.deb && rm ./openkylin-archive-anything.deb
 
-for arch in amd64 arm64 riscv64; do
+for arch in amd64 arm64; do
     sudo mmdebstrap \
         --hook-dir=/usr/share/mmdebstrap/hooks/merged-usr \
         --include=$PACKAGES \
